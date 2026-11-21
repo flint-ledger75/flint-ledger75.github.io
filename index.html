@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>51推特每日大赛 - 创意影像社区,记录每一次灵感时刻</title>
+<meta name="description" content="51推特每日大赛官方网站，是面向原创影像创作者的创意视频社区，聚合每日赛事、主题挑战与精品内容，陪伴每一位创作者持续成长。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff5a2e'/%3E%3Cpath d='M25 18 L48 32 L25 46 Z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{
+  --cup-primary:#ff5a2e;
+  --cup-primary-deep:#e0431a;
+  --cup-amber:#ffb347;
+  --cup-cream:#fff8f2;
+  --cup-ink:#241c18;
+  --cup-ink-soft:#6b5a52;
+  --cup-line:#f1ddd2;
+  --cup-card:#ffffff;
+  --cup-shadow:0 14px 34px rgba(191,84,42,.12);
+  --cup-radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  color:var(--cup-ink);
+  background:var(--cup-cream);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+ul{list-style:none;}
+
+.cup-skip{position:absolute;left:-9999px;}
+.cup-skip:focus{left:12px;top:12px;background:#fff;padding:8px 14px;border-radius:8px;z-index:999;}
+
+/* 公告条 + 页头 吸顶 */
+.cup-topstack{
+  position:sticky;top:0;z-index:80;
+  background:rgba(255,248,242,.94);
+  backdrop-filter:blur(12px);
+  box-shadow:0 2px 16px rgba(191,84,42,.08);
+}
+.cup-announce{
+  background:linear-gradient(90deg,#ff5a2e,#ff8b3d 55%,#ffb347);
+  color:#fff;
+  font-size:13.5px;
+  overflow:hidden;
+}
+.cup-announce-inner{
+  max-width:1200px;margin:0 auto;
+  padding:8px 20px;
+  display:flex;align-items:center;gap:14px;
+  white-space:nowrap;
+}
+.cup-announce-badge{
+  flex:none;
+  background:rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:20px;
+  padding:1px 10px;
+  font-size:12px;font-weight:700;letter-spacing:.5px;
+}
+.cup-announce-track{
+  display:flex;gap:44px;
+  animation:cupMarquee 26s linear infinite;
+}
+.cup-announce-track span{opacity:.95;}
+@keyframes cupMarquee{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+.cup-header{
+  max-width:1200px;margin:0 auto;
+  padding:12px 20px;
+  display:flex;align-items:center;gap:22px;
+}
+.cup-brand{display:flex;align-items:center;gap:10px;flex:none;}
+.cup-brand-mark{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,#ff5a2e,#ffb347);
+  display:grid;place-items:center;
+  box-shadow:0 6px 16px rgba(255,90,46,.35);
+}
+.cup-brand-mark svg{width:18px;height:18px;}
+.cup-brand-text b{
+  display:block;font-size:17px;letter-spacing:.4px;line-height:1.2;
+}
+.cup-brand-text small{
+  display:block;font-size:11px;color:var(--cup-ink-soft);letter-spacing:2px;
+}
+.cup-nav{display:flex;gap:4px;margin-left:8px;flex-wrap:wrap;}
+.cup-nav a{
+  padding:7px 12px;border-radius:10px;font-size:14.5px;color:var(--cup-ink-soft);
+  transition:.22s;
+}
+.cup-nav a:hover{background:#ffe8dc;color:var(--cup-primary-deep);}
+.cup-head-tools{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.cup-search{
+  position:relative;display:flex;align-items:center;
+  background:#fff;border:1px solid var(--cup-line);
+  border-radius:999px;padding:6px 8px 6px 14px;
+  transition:.25s;
+}
+.cup-search:focus-within{border-color:var(--cup-primary);box-shadow:0 0 0 3px rgba(255,90,46,.14);}
+.cup-search input{
+  border:none;outline:none;background:transparent;font-size:14px;width:150px;color:var(--cup-ink);
+}
+.cup-search button{
+  background:var(--cup-primary);color:#fff;
+  border-radius:999px;padding:5px 13px;font-size:13px;
+  transition:.2s;
+}
+.cup-search button:hover{background:var(--cup-primary-deep);}
+.cup-search-hint{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:#fff;border-radius:12px;box-shadow:var(--cup-shadow);
+  padding:10px 14px;font-size:13px;color:var(--cup-ink-soft);
+  display:none;
+}
+.cup-search-hint.is-on{display:block;}
+.cup-burger{
+  display:none;width:42px;height:42px;border-radius:12px;
+  border:1px solid var(--cup-line);background:#fff;
+  place-items:center;
+}
+.cup-burger span{display:block;width:18px;height:2px;background:var(--cup-ink);margin:3px 0;border-radius:2px;}
+
+/* 通用 */
+.cup-wrap{max-width:1200px;margin:0 auto;padding:0 20px;}
+.cup-section{padding:64px 0;scroll-margin-top:120px;}
+.cup-section--alt{background:#fff;border-top:1px solid var(--cup-line);border-bottom:1px solid var(--cup-line);}
+.cup-sec-head{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:32px;}
+.cup-sec-head .cup-kicker{
+  font-size:12.5px;font-weight:700;color:var(--cup-primary-deep);
+  letter-spacing:3px;text-transform:uppercase;
+}
+.cup-sec-head h2{
+  font-size:clamp(24px,3vw,32px);line-height:1.3;letter-spacing:.5px;
+}
+.cup-sec-head p{color:var(--cup-ink-soft);font-size:14.5px;max-width:520px;}
+.cup-sec-head .cup-sec-more{margin-left:auto;font-size:14px;color:var(--cup-primary-deep);font-weight:600;}
+
+/* Hero */
+.cup-hero{
+  position:relative;overflow:hidden;
+  padding:58px 0 70px;
+  background:
+    radial-gradient(900px 420px at 82% -10%,#ffe1cf 0%,rgba(255,241,232,0) 70%),
+    linear-gradient(180deg,#fff8f2,#ffefe4);
+}
+.cup-hero-grain{
+  position:absolute;inset:0;opacity:.5;pointer-events:none;
+  background-image:radial-gradient(#ffc9ad 1px,transparent 1px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.5),transparent 75%);
+}
+.cup-hero-grid{
+  position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+}
+.cup-hero-copy .cup-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;border:1px solid #ffd6c0;color:var(--cup-primary-deep);
+  padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 14px rgba(255,90,46,.12);
+}
+.cup-dot{width:7px;height:7px;border-radius:50%;background:var(--cup-primary);box-shadow:0 0 0 4px rgba(255,90,46,.18);}
+.cup-hero h1{
+  font-size:clamp(38px,5.2vw,62px);
+  line-height:1.12;letter-spacing:1px;margin:20px 0 8px;
+}
+.cup-hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#ff5a2e,#ff9a3d 70%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cup-hero-sub{
+  font-size:17px;font-weight:600;color:var(--cup-ink);margin-bottom:14px;
+}
+.cup-hero-desc{
+  color:var(--cup-ink-soft);font-size:15px;max-width:560px;
+}
+.cup-hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;}
+.cup-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border-radius:12px;font-size:15px;font-weight:600;
+  transition:transform .2s,box-shadow .2s,background .2s;
+}
+.cup-btn--solid{
+  background:linear-gradient(135deg,#ff5a2e,#ff8b3d);
+  color:#fff;box-shadow:0 10px 24px rgba(255,90,46,.32);
+}
+.cup-btn--solid:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(255,90,46,.4);}
+.cup-btn--ghost{
+  background:#fff;color:var(--cup-primary-deep);border:1px solid #ffd2bd;
+}
+.cup-btn--ghost:hover{background:#fff3ec;}
+.cup-hero-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px;max-width:480px;
+}
+.cup-hero-stats div{
+  background:#fff;border:1px solid var(--cup-line);border-radius:14px;padding:14px 12px;
+  text-align:center;box-shadow:0 6px 18px rgba(191,84,42,.06);
+}
+.cup-hero-stats b{display:block;font-size:22px;color:var(--cup-primary-deep);line-height:1.2;}
+.cup-hero-stats span{font-size:12.5px;color:var(--cup-ink-soft);}
+.cup-hero-visual{position:relative;}
+.cup-hero-cover{
+  position:relative;border-radius:22px;overflow:hidden;
+  box-shadow:0 26px 60px rgba(191,84,42,.22);
+  transform:rotate(-1.2deg);
+}
+.cup-hero-cover img{width:100%;aspect-ratio:16/10;object-fit:cover;}
+.cup-hero-cover .cup-cover-tag{
+  position:absolute;left:16px;top:16px;
+  background:rgba(36,28,24,.72);color:#fff;font-size:12.5px;
+  padding:5px 12px;border-radius:999px;backdrop-filter:blur(4px);
+}
+.cup-hero-float{
+  position:absolute;right:-6px;bottom:-26px;
+  background:#fff;border-radius:16px;padding:12px 16px;
+  box-shadow:var(--cup-shadow);display:flex;align-items:center;gap:12px;
+}
+.cup-hero-float .cup-av{width:38px;height:38px;font-size:15px;}
+.cup-hero-float b{font-size:14px;display:block;line-height:1.3;}
+.cup-hero-float small{font-size:12px;color:var(--cup-ink-soft);}
+
+/* 视频卡片通用 */
+.cup-video-card{
+  background:var(--cup-card);border:1px solid var(--cup-line);border-radius:var(--cup-radius);
+  overflow:hidden;transition:transform .25s,box-shadow .25s;
+  display:flex;flex-direction:column;
+}
+.cup-video-card:hover{transform:translateY(-5px);box-shadow:var(--cup-shadow);}
+.cup-video-cover{position:relative;overflow:hidden;}
+.cup-video-cover img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .5s;}
+.cup-video-card:hover .cup-video-cover img{transform:scale(1.06);}
+.cup-video-cover .cup-play{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:linear-gradient(180deg,rgba(36,28,24,.05),rgba(36,28,24,.42));
+}
+.cup-play i{
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  display:grid;place-items:center;
+  transition:transform .25s,background .25s;
+}
+.cup-play i::after{
+  content:"";width:0;height:0;margin-left:3px;
+  border-left:13px solid var(--cup-primary-deep);
+  border-top:8px solid transparent;border-bottom:8px solid transparent;
+}
+.cup-video-card:hover .cup-play i{transform:scale(1.1);background:#fff;}
+.cup-video-cover .cup-cover-tag{
+  position:absolute;left:12px;top:12px;
+  font-size:12px;padding:4px 10px;border-radius:999px;
+  background:rgba(36,28,24,.72);color:#fff;backdrop-filter:blur(4px);
+}
+.cup-video-cover .cup-duration{
+  position:absolute;right:12px;bottom:12px;
+  font-size:12px;padding:2px 8px;border-radius:6px;
+  background:rgba(36,28,24,.78);color:#fff;
+}
+.cup-video-body{padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.cup-video-body h3{font-size:16px;line-height:1.5;letter-spacing:.2px;}
+.cup-video-body .cup-video-abs{font-size:13px;color:var(--cup-ink-soft);line-height:1.65;}
+.cup-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.cup-tags span{
+  font-size:11.5px;color:var(--cup-primary-deep);
+  background:#fff0e8;border-radius:6px;padding:2px 8px;
+}
+.cup-video-meta{
+  display:flex;align-items:center;gap:8px;font-size:12px;color:var(--cup-ink-soft);
+  margin-top:auto;padding-top:6px;
+}
+.cup-av{
+  width:26px;height:26px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700;flex:none;
+}
+.cup-video-actions{display:flex;gap:6px;margin-left:auto;}
+.cup-act{
+  display:flex;align-items:center;gap:4px;
+  font-size:12px;color:var(--cup-ink-soft);
+  padding:3px 7px;border-radius:7px;transition:.2s;
+}
+.cup-act:hover{background:#fff0e8;color:var(--cup-primary-deep);}
+.cup-act.is-on{color:var(--cup-primary-deep);font-weight:600;}
+.cup-act svg{width:14px;height:14px;}
+
+/* 焦点视频布局 */
+.cup-spotlight{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:20px;}
+.cup-spotlight .cup-video-card:first-child{grid-row:span 2;}
+.cup-spotlight .cup-video-card:first-child .cup-video-body h3{font-size:20px;}
+.cup-spotlight .cup-video-card:first-child .cup-video-cover img{aspect-ratio:16/11;}
+
+/* 介绍长文 */
+.cup-about{
+  display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:start;
+}
+.cup-about h2{font-size:clamp(23px,2.6vw,30px);line-height:1.35;margin-bottom:18px;}
+.cup-about p{font-size:15px;color:#4a3d37;margin-bottom:14px;}
+.cup-about strong{color:var(--cup-primary-deep);}
+.cup-about-side{
+  background:#fff;border:1px solid var(--cup-line);border-radius:22px;padding:26px;
+  box-shadow:0 16px 40px rgba(191,84,42,.08);
+  position:sticky;top:130px;
+}
+.cup-about-side h3{font-size:17px;margin-bottom:16px;}
+.cup-about-side dl{display:grid;gap:14px;}
+.cup-about-side dt{font-size:13px;color:var(--cup-ink-soft);}
+.cup-about-side dd{font-size:15px;font-weight:600;color:var(--cup-ink);}
+.cup-about-side .cup-side-note{
+  margin-top:20px;padding-top:18px;border-top:1px dashed var(--cup-line);
+  font-size:13px;color:var(--cup-ink-soft);
+}
+
+/* 话题标签 */
+.cup-topics{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.cup-topic{
+  font-size:13.5px;padding:7px 16px;border-radius:999px;
+  background:#fff;border:1px solid var(--cup-line);color:var(--cup-ink-soft);
+  transition:.22s;
+}
+.cup-topic:hover,.cup-topic.is-active{
+  background:var(--cup-primary);border-color:var(--cup-primary);color:#fff;
+}
+.cup-filter-note{font-size:13px;color:var(--cup-ink-soft);min-height:22px;margin-top:6px;}
+
+/* 视频流网格 */
+.cup-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+
+/* 专题 */
+.cup-series{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.cup-series-card{
+  position:relative;border-radius:var(--cup-radius);overflow:hidden;
+  box-shadow:0 10px 26px rgba(191,84,42,.12);
+  transition:transform .25s;
+}
+.cup-series-card:hover{transform:translateY(-4px);}
+.cup-series-card img{width:100%;aspect-ratio:3/4;object-fit:cover;}
+.cup-series-card .cup-series-info{
+  position:absolute;inset:auto 0 0 0;padding:18px 16px;
+  background:linear-gradient(180deg,transparent,rgba(30,20,16,.86));
+  color:#fff;
+}
+.cup-series-info h3{font-size:16px;line-height:1.45;}
+.cup-series-info p{font-size:12.5px;opacity:.85;margin:4px 0 8px;line-height:1.5;}
+.cup-series-info .cup-series-state{
+  display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;
+  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);
+}
+
+/* 创作者 */
+.cup-creators{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.cup-creator{
+  background:#fff;border:1px solid var(--cup-line);border-radius:var(--cup-radius);
+  padding:22px;display:flex;flex-direction:column;gap:12px;
+  transition:.25s;
+}
+.cup-creator:hover{box-shadow:var(--cup-shadow);transform:translateY(-4px);}
+.cup-creator-head{display:flex;align-items:center;gap:14px;}
+.cup-creator-head .cup-av{width:52px;height:52px;font-size:19px;}
+.cup-creator-head b{font-size:16px;display:block;line-height:1.3;}
+.cup-creator-head small{font-size:12.5px;color:var(--cup-ink-soft);}
+.cup-creator p{font-size:13.5px;color:var(--cup-ink-soft);line-height:1.7;flex:1;}
+.cup-creator-foot{display:flex;gap:16px;font-size:12.5px;color:var(--cup-ink-soft);}
+.cup-creator-foot b{color:var(--cup-ink);}
+
+/* 故事 */
+.cup-stories{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.cup-story{
+  background:#fff;border-radius:var(--cup-radius);padding:24px;
+  border:1px solid var(--cup-line);
+  display:flex;flex-direction:column;gap:12px;
+}
+.cup-story .cup-quote{
+  font-size:26px;line-height:1;color:var(--cup-amber);font-family:Georgia,serif;
+}
+.cup-story h3{font-size:16.5px;line-height:1.5;}
+.cup-story p{font-size:13.5px;color:var(--cup-ink-soft);line-height:1.75;}
+.cup-story footer{font-size:12.5px;color:var(--cup-ink-soft);margin-top:auto;}
+
+/* 评价 */
+.cup-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.cup-quote-card{
+  background:#fff;border:1px solid var(--cup-line);border-radius:16px;padding:18px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.cup-quote-card p{font-size:13.5px;color:#4a3d37;line-height:1.75;}
+.cup-quote-card .cup-quote-who{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--cup-ink-soft);}
+.cup-stars{color:var(--cup-amber);font-size:13px;letter-spacing:1px;}
+
+/* 灵感 / 工具 */
+.cup-idea{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.cup-idea-card{
+  background:linear-gradient(160deg,#fff,#fff6f0);
+  border:1px solid var(--cup-line);border-radius:16px;padding:20px;
+}
+.cup-idea-card h3{font-size:15px;margin-bottom:8px;}
+.cup-idea-card p{font-size:13px;color:var(--cup-ink-soft);line-height:1.7;}
+.cup-idea-card .cup-idea-tag{
+  display:inline-block;margin-top:12px;font-size:11.5px;color:var(--cup-primary-deep);
+  background:#ffe6d8;border-radius:6px;padding:2px 8px;
+}
+
+/* 动态 */
+.cup-news{display:grid;gap:0;background:#fff;border:1px solid var(--cup-line);border-radius:var(--cup-radius);overflow:hidden;}
+.cup-news-item{
+  display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:center;
+  padding:18px 22px;border-bottom:1px solid var(--cup-line);
+  transition:.2s;
+}
+.cup-news-item:last-child{border-bottom:none;}
+.cup-news-item:hover{background:#fff8f2;}
+.cup-news-date{font-size:13px;color:var(--cup-primary-deep);font-weight:600;}
+.cup-news-item h3{font-size:15px;font-weight:600;}
+.cup-news-item p{font-size:13px;color:var(--cup-ink-soft);}
+.cup-news-item .cup-news-more{font-size:12.5px;color:var(--cup-ink-soft);}
+
+/* FAQ */
+.cup-faq{display:grid;gap:12px;max-width:900px;}
+.cup-faq details{
+  background:#fff;border:1px solid var(--cup-line);border-radius:14px;padding:0 20px;
+  transition:.2s;
+}
+.cup-faq details[open]{border-color:#ffc9ad;box-shadow:0 8px 22px rgba(191,84,42,.1);}
+.cup-faq summary{
+  padding:16px 0;font-size:15px;font-weight:600;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  list-style:none;
+}
+.cup-faq summary::-webkit-details-marker{display:none;}
+.cup-faq summary::after{
+  content:"+";font-size:20px;font-weight:400;color:var(--cup-primary);
+  transition:transform .25s;flex:none;
+}
+.cup-faq details[open] summary::after{transform:rotate(45deg);}
+.cup-faq details p{font-size:13.5px;color:var(--cup-ink-soft);padding-bottom:16px;line-height:1.8;}
+
+/* 联系/投稿 */
+.cup-contact{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:28px;
+  background:linear-gradient(140deg,#fff,#fff4ec);
+  border:1px solid #ffdcc9;border-radius:24px;padding:34px;
+}
+.cup-contact h2{font-size:clamp(22px,2.6vw,28px);margin-bottom:10px;}
+.cup-contact p{font-size:14px;color:var(--cup-ink-soft);}
+.cup-contact-info{display:grid;gap:10px;margin-top:20px;font-size:14px;}
+.cup-contact-info span b{color:var(--cup-primary-deep);}
+.cup-contact-panel{
+  background:#fff;border-radius:18px;padding:22px;border:1px solid var(--cup-line);
+  display:flex;flex-direction:column;gap:12px;justify-content:center;
+}
+.cup-contact-panel h3{font-size:16px;}
+.cup-contact-panel p{font-size:13px;}
+.cup-copy-row{display:flex;gap:8px;}
+.cup-copy-row input{
+  flex:1;border:1px solid var(--cup-line);border-radius:10px;padding:9px 12px;
+  font-size:13px;color:var(--cup-ink-soft);background:#fff8f2;outline:none;
+}
+.cup-copy-row button{
+  background:var(--cup-primary);color:#fff;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;
+}
+.cup-copy-row button:hover{background:var(--cup-primary-deep);}
+
+/* 伙伴 */
+.cup-partners{display:flex;flex-wrap:wrap;gap:12px;}
+.cup-partner{
+  padding:12px 22px;border-radius:12px;background:#fff;border:1px solid var(--cup-line);
+  font-size:14px;color:var(--cup-ink-soft);letter-spacing:.5px;
+  transition:.2s;
+}
+.cup-partner:hover{border-color:#ffc9ad;color:var(--cup-primary-deep);}
+
+/* 页脚 */
+.cup-footer{
+  background:#241c18;color:#e6d8d0;padding:52px 0 26px;margin-top:20px;
+}
+.cup-footer-grid{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;
+}
+.cup-footer h4{font-size:14px;letter-spacing:1px;margin-bottom:14px;color:#fff;}
+.cup-footer p,.cup-footer a{font-size:13px;color:#b9a79d;line-height:1.9;}
+.cup-footer a:hover{color:var(--cup-amber);}
+.cup-footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.cup-footer-brand .cup-brand-mark{box-shadow:none;}
+.cup-footer-brand b{color:#fff;font-size:16px;}
+.cup-footer-bottom{
+  margin-top:34px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:12.5px;color:#9a877c;
+}
+
+/* 回到顶部 */
+.cup-top-btn{
+  position:fixed;right:24px;bottom:26px;z-index:70;
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,#ff5a2e,#ff8b3d);color:#fff;
+  display:grid;place-items:center;box-shadow:0 10px 24px rgba(255,90,46,.4);
+  opacity:0;visibility:hidden;transform:translateY(10px);transition:.28s;
+}
+.cup-top-btn.is-on{opacity:1;visibility:visible;transform:none;}
+
+/* Toast */
+.cup-toast{
+  position:fixed;left:50%;bottom:40px;transform:translate(-50%,20px);
+  background:#241c18;color:#fff;font-size:13.5px;padding:11px 22px;border-radius:999px;
+  box-shadow:0 12px 30px rgba(0,0,0,.24);z-index:120;
+  opacity:0;visibility:hidden;transition:.28s;pointer-events:none;
+}
+.cup-toast.is-on{opacity:1;visibility:visible;transform:translate(-50%,0);}
+
+/* 弹窗 */
+.cup-modal{
+  position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:20px;
+  background:rgba(36,28,24,.5);backdrop-filter:blur(3px);
+  opacity:0;visibility:hidden;transition:.25s;
+}
+.cup-modal.is-on{opacity:1;visibility:visible;}
+.cup-modal-box{
+  background:#fff;border-radius:20px;max-width:440px;width:100%;
+  padding:26px;box-shadow:0 30px 70px rgba(0,0,0,.3);
+  transform:translateY(14px);transition:.25s;
+}
+.cup-modal.is-on .cup-modal-box{transform:none;}
+.cup-modal-box h3{font-size:18px;margin-bottom:10px;}
+.cup-modal-box p{font-size:14px;color:var(--cup-ink-soft);line-height:1.8;}
+.cup-modal-box textarea{
+  width:100%;border:1px solid var(--cup-line);border-radius:12px;padding:12px;
+  font-size:14px;font-family:inherit;resize:vertical;min-height:110px;margin-top:14px;
+  outline:none;
+}
+.cup-modal-box textarea:focus{border-color:var(--cup-primary);}
+.cup-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
+.cup-modal-actions .cup-btn{padding:9px 20px;font-size:14px;}
+.cup-modal-close{
+  position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;
+  background:#f6eee9;color:var(--cup-ink-soft);font-size:18px;line-height:1;
+}
+.cup-modal-inner{position:relative;}
+
+/* 响应式 */
+@media (max-width:1024px){
+  .cup-hero-grid{grid-template-columns:1fr;gap:34px;}
+  .cup-about{grid-template-columns:1fr;}
+  .cup-about-side{position:static;}
+  .cup-spotlight{grid-template-columns:1fr 1fr;}
+  .cup-spotlight .cup-video-card:first-child{grid-column:span 2;grid-row:auto;}
+  .cup-flow{grid-template-columns:repeat(2,1fr);}
+  .cup-series{grid-template-columns:repeat(2,1fr);}
+  .cup-creators{grid-template-columns:repeat(2,1fr);}
+  .cup-stories{grid-template-columns:1fr;}
+  .cup-quotes{grid-template-columns:repeat(2,1fr);}
+  .cup-idea{grid-template-columns:repeat(2,1fr);}
+  .cup-contact{grid-template-columns:1fr;}
+  .cup-footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:720px){
+  .cup-nav{
+    display:none;position:absolute;left:12px;right:12px;top:100%;
+    background:#fff;border-radius:16px;box-shadow:var(--cup-shadow);
+    padding:12px;flex-direction:column;
+  }
+  .cup-nav.is-open{display:flex;}
+  .cup-header{flex-wrap:wrap;gap:12px;}
+  .cup-head-tools{margin-left:auto;}
+  .cup-burger{display:grid;}
+  .cup-search input{width:110px;}
+  .cup-hero-stats{grid-template-columns:1fr 1fr;}
+  .cup-spotlight{grid-template-columns:1fr;}
+  .cup-spotlight .cup-video-card:first-child{grid-column:auto;}
+  .cup-flow{grid-template-columns:1fr;}
+  .cup-series{grid-template-columns:1fr;}
+  .cup-creators{grid-template-columns:1fr;}
+  .cup-quotes{grid-template-columns:1fr;}
+  .cup-idea{grid-template-columns:1fr;}
+  .cup-news-item{grid-template-columns:1fr;gap:6px;}
+  .cup-footer-grid{grid-template-columns:1fr;}
+  .cup-announce-inner{font-size:12px;gap:10px;}
+  .cup-section{padding:48px 0;}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="cup-topstack" id="cupTop">
+  <div class="cup-announce">
+    <div class="cup-announce-inner">
+      <span class="cup-announce-badge">每日大赛 · 今日</span>
+      <div class="cup-announce-track">
+        <span>11月19日主题「城市清晨的一分钟」报名中，作品上传截止 23:00</span>
+        <span>本周新增 268 件原创投稿，创意榜单已更新</span>
+        <span>「创作幕后」专题上线，5 位创作者公开完整剪辑流程</span>
+        <span>11月19日主题「城市清晨的一分钟」报名中，作品上传截止 23:00</span>
+        <span>本周新增 268 件原创投稿，创意榜单已更新</span>
+        <span>「创作幕后」专题上线，5 位创作者公开完整剪辑流程</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="cup-header">
+    <a class="cup-brand" href="#cup-hero" aria-label="51推特每日大赛官方网站首页">
+      <span class="cup-brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M8 5.5 19 12 8 18.5V5.5Z" fill="#fff"/></svg>
+      </span>
+      <span class="cup-brand-text">
+        <b>51推特每日大赛</b>
+        <small>DAILY CREATIVE ARENA</small>
+      </span>
+    </a>
+    <nav class="cup-nav" id="cupNav" aria-label="主导航">
+      <a href="#cup-hero">首页</a>
+      <a href="#cup-about">关于大赛</a>
+      <a href="#cup-focus">焦点内容</a>
+      <a href="#cup-series">专题企划</a>
+      <a href="#cup-creators">创作者</a>
+      <a href="#cup-news">企业动态</a>
+      <a href="#cup-faq">帮助</a>
+      <a href="#cup-contact">联系</a>
+    </nav>
+    <div class="cup-head-tools">
+      <div class="cup-search">
+        <input type="search" id="cupSearch" placeholder="搜索大赛主题 / 创作者" aria-label="站内搜索">
+        <button type="button" id="cupSearchBtn">搜索</button>
+        <div class="cup-search-hint" id="cupSearchHint"></div>
+      </div>
+      <button class="cup-burger" id="cupBurger" aria-label="展开导航" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+</div>
+
+<main>
+
+  <!-- 首屏 -->
+  <section class="cup-hero" id="cup-hero">
+    <div class="cup-hero-grain" aria-hidden="true"></div>
+    <div class="cup-wrap cup-hero-grid">
+      <div class="cup-hero-copy">
+        <span class="cup-pill"><span class="cup-dot"></span>官方网站 · 每日一场创意影像赛事</span>
+        <h1>51推特每日大赛</h1>
+        <p class="cup-hero-sub">一个为原创影像而生的视频品牌平台，每天给创意一次被看见的机会。</p>
+        <p class="cup-hero-desc">作为持续运营的影像社区品牌，51推特每日大赛以「每日主题、公开投稿、真实评选」为核心机制，连接企业、创作者与观众，让每一段认真拍摄的影像都获得属于它的回应。</p>
+        <div class="cup-hero-cta">
+          <a class="cup-btn cup-btn--solid" href="#cup-focus">查看今日焦点</a>
+          <a class="cup-btn cup-btn--ghost" href="#cup-contact">报名参与大赛</a>
+          <button class="cup-btn cup-btn--ghost" type="button" data-cup-share="51推特每日大赛官方网站">分享给同好</button>
+        </div>
+        <div class="cup-hero-stats">
+          <div><b>1,286</b><span>累计赛事场次</span></div>
+          <div><b>34,700+</b><span>原创作品投稿</span></div>
+          <div><b>5,120</b><span>入驻创作者</span></div>
+        </div>
+      </div>
+      <div class="cup-hero-visual">
+        <div class="cup-hero-cover">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 400'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff8b3d'/%3E%3Cstop offset='1' stop-color='%23e0431a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='640' height='400' fill='url(%23g1)'/%3E%3Ccircle cx='520' cy='70' r='120' fill='%23ffb347' opacity='.55'/%3E%3Ccircle cx='96' cy='330' r='90' fill='%23ff5a2e' opacity='.6'/%3E%3Cpath d='M0 300 Q160 240 320 300 T640 280 V400 H0Z' fill='%23a52c0c' opacity='.35'/%3E%3Crect x='230' y='140' width='180' height='120' rx='12' fill='%23fff8f2' opacity='.92'/%3E%3Cpath d='M300 178 L340 200 L300 222Z' fill='%23e0431a'/%3E%3C/svg%3E" alt="51推特每日大赛首屏主视觉：橙色赛事舞台与播放标识">
+          <span class="cup-cover-tag">今日主题 · 城市清晨的一分钟</span>
+        </div>
+        <div class="cup-hero-float">
+          <span class="cup-av" style="background:linear-gradient(135deg,#ff8b3d,#e0431a)">晨</span>
+          <div>
+            <b>今日已有 92 位创作者上传</b>
+            <small>距离本场投稿结束还有 6 小时</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于与深度解析 -->
+  <section class="cup-section" id="cup-about">
+    <div class="cup-wrap cup-about">
+      <div>
+        <div class="cup-sec-head" style="margin-bottom:20px;">
+          <span class="cup-kicker">About the Arena</span>
+        </div>
+        <h2>关于 51推特每日大赛：让每日创作成为一种可信赖的习惯</h2>
+        <p>51推特每日大赛是这个影像品牌的官方网站主阵地，也是每天有内容发生的地方。我们相信，创意并不总是宏大叙事，它更常出现在普通的一天里：清晨的通勤路上、午后的一杯咖啡、深夜剪辑台前的一次反复调色。平台以「每日一场大赛」为节奏，把这种日常创作组织成可参与、可讨论、可被记录的公共事件。</p>
+        <p>作为<strong>垂直领域</strong>的创意影像社区，我们不做泛泛的内容聚合，而是围绕赛事机制建立完整的内容生态：主题发布、投稿上传、公开投票、专业评审、作品展映、创作者访谈。每一次赛事都配有清晰的主题说明与创作提示，让第一次投稿的人也能知道从哪里开始，让持续创作的作者积累起自己的作品档案。</p>
+        <p>品牌自创立以来持续运营，已形成稳定的<strong>原创</strong>内容生产链路。我们与高校影像社团、独立工作室、企业品牌内容团队保持长期合作，把赛事中涌现的优质作品推荐给更广阔的展映渠道。对创作者而言，这里是练习场，也是展示窗口；对观众而言，这里是每日都能发现惊喜的影像入口。</p>
+        <p>在内容品质上，我们坚持人工审核与社区共治并行：所有投稿先经过基础规范审核，再进入公开投票与专业评审环节。我们反对搬运与拼接，鼓励真实拍摄与真诚表达。平台上所有展示内容均为正版授权或创作者原创上传，<strong>高清</strong>画质播放与完整版权说明同步呈现，让创作者的努力被尊重，让观众的选择更放心。</p>
+        <p>品牌故事并不复杂：一群人想给每天认真拍东西的人一个固定的时间与位置。于是有了每日大赛，有了创意榜单，有了那些在评论区里互相切磋、互相打气的创作者。我们愿意把这件事做很久，把平台做成<strong>值得信赖</strong>的创作基础设施，让「今天你参赛了吗」成为社区里一句平常的问候。</p>
+        <p>面向未来，51推特每日大赛将继续深耕创意影像的<strong>内容生态</strong>：扩展赛事主题的多元性，完善创作者成长体系，开放更多企业共创通道，并为公益影像项目提供免费的展示与传播支持。我们相信持续运营的力量，也相信每日一点点的积累，最终会成为某个创作者职业生涯里重要的起点。</p>
+      </div>
+      <aside class="cup-about-side">
+        <h3>品牌速览</h3>
+        <dl>
+          <div><dt>品牌名称</dt><dd>51推特每日大赛</dd></div>
+          <div><dt>平台定位</dt><dd>创意影像赛事社区</dd></div>
+          <div><dt>核心机制</dt><dd>每日主题 · 公开投稿 · 双轨评审</dd></div>
+          <div><dt>内容方向</dt><dd>日常记录 / 城市探索 / 创作幕后</dd></div>
+          <div><dt>服务对象</dt><dd>创作者、观众、企业内容团队</dd></div>
+          <div><dt>运营状态</dt><dd>持续运营 · 每日更新</dd></div>
+        </dl>
+        <p class="cup-side-note">本页为企业官方网站信息页，赛事规则与投稿通道以官方发布为准。</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 焦点内容 -->
+  <section class="cup-section cup-section--alt" id="cup-focus">
+    <div class="cup-wrap">
+      <div class="cup-sec-head">
+        <div>
+          <span class="cup-kicker">Spotlight</span>
+          <h2>焦点内容 · 今日值得停留的影像</h2>
+          <p>由编辑部与社区共同推荐，覆盖赛事获奖作品、创作者专访与幕后记录。</p>
+        </div>
+        <a class="cup-sec-more" href="#cup-series">查看全部专题 →</a>
+      </div>
+
+      <div class="cup-topics" id="cupTopics">
+        <button class="cup-topic is-active" data-topic="全部" type="button">全部</button>
+        <button class="cup-topic" data-topic="赛事获奖" type="button">赛事获奖</button>
+        <button class="cup-topic" data-topic="创作幕后" type="button">创作幕后</button>
+        <button class="cup-topic" data-topic="城市探索" type="button">城市探索</button>
+        <button class="cup-topic" data-topic="人物访谈" type="button">人物访谈</button>
+      </div>
+      <p class="cup-filter-note" id="cupFilterNote">当前展示全部焦点内容，共 6 条。</p>
+
+      <div class="cup-spotlight" id="cupSpotlight">
+        <article class="cup-video-card" data-cat="赛事获奖">
+          <div class="cup-video-cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Cdefs%3E%3ClinearGradient id='a1' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232e2a3d'/%3E%3Cstop offset='1' stop-color='%23ff5a2e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='640' height='360' fill='url(%23a1)'/%3E%3Ccircle cx='520' cy='280' r='150' fill='%23ffb347' opacity='.35'/%3E%3Crect x='60' y='200' width='90' height='120' fill='%23241c18' opacity='.45'/%3E%3Crect x='170' y='160' width='70' height='160' fill='%23241c18' opacity='.35'/%3E%3Crect x='260' y='220' width='110' height='100' fill='%23241c18' opacity='.4'/%3E%3Ccircle cx='430' cy='120' r='34' fill='%23fff8f2' opacity='.85'/%3E%3C/svg%3E" alt="赛事获奖作品《一分钟的清晨通勤》封面：晨光中的街道剪影">
+            <div class="cup-play" aria-hidden="true"><i></i></div>
+            <span class="cup-cover-tag">赛事获奖</span>
+            <span class="cup-duration">01:00</span>
+          </div>
+          <div class="cup-video-body">
+            <h3>《一分钟的清晨通勤》：把每个工作日都拍成一首短诗</h3>
+            <p class="cup-video-abs">第 1247 场主题赛金奖作品。创作者用固定机位记录同一路段四个季节的清晨，剪辑克制，声音全部来自现场环境。</p>
+            <div class="cup-tags"><span>日常记录</span><span>城市探索</span><span>金奖</span></div>
+            <div class="cup-video-meta">
+              <span class="cup-av" style="background:linear-gradient(135deg,#5b6bff,#2e2a3d)">林</span>
+              <span>林岸 · 3.2 万关注</span>
+              <span class="cup-video-actions">
+                <button class="cup-act" data-like type="button" aria-label="点赞">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v10H4V10h3Zm4 10a2 2 0 0 1-2-2v-6l4-8a2 2 0 0 1 3.6 1.7L15 9h4.4a2 2 0 0 1 2 2.4l-1.6 7A2 2 0 0 1 17.8 20H11Z"/></svg>
+                  <span data-count>328</span>
+                </button>
+                <button class="cup-act" data-fav type="button" aria-label="收藏">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cup-video-card" data-cat="创作幕后">
+          <div class="cup-video-cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%23eef3f8'/%3E%3Crect x='70' y='60' width='280' height='190' rx='8' fill='%232e3a48'/%3E%3Crect x='90' y='80' width='240' height='120' rx='4' fill='%233fa2ff' opacity='.75'/%3E%3Crect x='90' y='210' width='140' height='10' rx='5' fill='%23c7d4e0'/%3E%3Crect x='90' y='228' width='90' height='8' rx='4' fill='%23c7d4e0'/%3E%3Ccircle cx='470' cy='180' r='86' fill='%23ffb347' opacity='.7'/%3E%3Crect x='420' y='120' width='100' height='120' rx='10' fill='%23241c18' opacity='.2'/%3E%3C/svg%3E" alt="创作幕后内容《三小时剪出八分钟》封面：剪辑台与时间线">
+            <div class="cup-play" aria-hidden="true"><i></i></div>
+            <span class="cup-cover-tag">创作幕后</span>
+            <span class="cup-duration">08:24</span>
+          </div>
+          <div class="cup-video-body">
+            <h3>三小时剪出八分钟：一位剪辑师的完整时间线复盘</h3>
+            <p class="cup-video-abs">从素材挑选到节奏卡点，逐段拆解真实项目流程。</p>
+            <div class="cup-tags"><span>教程干货</span><span>剪辑思路</span></div>
+            <div class="cup-video-meta">
+              <span class="cup-av" style="background:linear-gradient(135deg,#3fa2ff,#2e3a48)">周</span>
+              <span>周知行</span>
+              <span class="cup-video-actions">
+                <button class="cup-act" data-like type="button" aria-label="点赞">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v10H4V10h3Zm4 10a2 2 0 0 1-2-2v-6l4-8a2 2 0 0 1 3.6 1.7L15 9h4.4a2 2 0 0 1 2 2.4l-1.6 7A2 2 0 0 1 17.8 20H11Z"/></svg>
+                  <span data-count>196</span>
+                </button>
+                <button class="cup-act" data-fav type="button" aria-label="收藏">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cup-video-card" data-cat="城市探索">
+          <div class="cup-video-cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%23ffd9a8'/%3E%3Ccircle cx='520' cy='90' r='62' fill='%23ff8b3d'/%3E%3Cpath d='M0 260 L120 190 L240 250 L360 180 L500 250 L640 200 V360 H0Z' fill='%23c4571f' opacity='.6'/%3E%3Crect x='0' y='300' width='640' height='60' fill='%238a3a13' opacity='.5'/%3E%3C/svg%3E" alt="城市探索内容《老城区的第 37 个巷口》封面：暖色屋顶与夕阳">
+            <div class="cup-play" aria-hidden="true"><i></i></div>
+            <span class="cup-cover-tag">城市探索</span>
+            <span class="cup-duration">05:12</span>
+          </div>
+          <div class="cup-video-body">
+            <h3>老城区的第 37 个巷口：一条街的十年影像档案</h3>
+            <p class="cup-video-abs">用同一机位记录城市更新，寻找正在消失的生活细节。</p>
+            <div class="cup-tags"><span>在地文化</span><span>影像档案</span></div>
+            <div class="cup-video-meta">
+              <span class="cup-av" style="background:linear-gradient(135deg,#c4571f,#ff8b3d)">阿</span>
+              <span>阿禾在路上</span>
+              <span class="cup-video-actions">
+                <button class="cup-act" data-like type="button" aria-label="点赞">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v10H4V10h3Zm4 10a2 2 0 0 1-2-2v-6l4-8a2 2 0 0 1 3.6 1.7L15 9h4.4a2 2 0 0 1 2 2.4l-1.6 7A2 2 0 0 1 17.8 20H11Z"/></svg>
+                  <span data-count>241</span>
+                </button>
+                <button class="cup-act" data-fav type="button" aria-label="收藏">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="cup-flow" id="cupFlow" style="margin-top:22px;">
+        <article class="cup-video-card" data-cat="人物访谈">
+          <div class="cup-video-cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%23f3e8ff'/%3E%3Ccircle cx='200' cy='180' r='90' fill='%23a06bff' opacity='.65'/%3E%3Ccircle cx='440' cy='150' r='70' fill='%23ff8bd0' opacity='.6'/%3E%3Crect x='120' y='270' width='400' height='14' rx='7' fill='%235b3fa0' opacity='.3'/%3E%3C/svg%3E" alt="人物访谈《每天拍一条，坚持了 800 天》封面：紫色调双人对话图形">
+            <div class="cup-play" aria-hidden="true"><i></i></div>
+            <span class="cup-cover-tag">人物访谈</span>
+            <span class="cup-duration">21:07</span>
+          </div>
+          <div class="cup-video-body">
+            <h3>每天拍一条，坚持了 800 天：对话创作者「小满的抽屉」</h3>
+            <p class="cup-video-abs">关于持续输出、灵感枯竭期，以及如何在日常里找到可拍的东西。</p>
+            <div class="cup-tags"><span>人物访谈</span><span>成长</span></div>
+            <div class="cup-video-meta">
+              <span class="cup-av" style="background:linear-gradient(135deg,#a06bff,#5b3fa0)">满</span>
+              <span>小满的抽屉</span>
+              <span class="cup-video-actions">
+                <button class="cup-act" data-like type="button" aria-label="点赞">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v10H4V10h3Zm4 10a2 2 0 0 1-2-2v-6l4-8a2 2 0 0 1 3.6 1.7L15 9h4.4a2 2 0 0 1 2 2.4l-1.6 7A2 2 0 0 1 17.8 20H11Z"/></svg>
+                  <span data-count>412</span>
+                </button>
+                <button class="cup-act" data-fav type="button" aria-label="收藏">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cup-video-card" data-cat="赛事获奖">
+          <div class="cup-video-cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%23123b32'/%3E%3Ccircle cx='320' cy='180' r='120' fill='%234fd1a0' opacity='.4'/%3E%3Cpath d='M0 300 Q160 210 320 270 T640 250 V360 H0Z' fill='%23218c6a' opacity='.6'/%3E%3Crect x='280' y='120' width='80' height='80' rx='40' fill='%23d6ffe9' opacity='.7'/%3E%3C/svg%3E" alt="赛事获奖作品《雨后菜市场》封面：深绿背景与圆形光斑">
+            <div class="cup-play" aria-hidden="true"><i></i></div>
+            <span class="cup-cover-tag">赛事获奖</span>
+            <span class="cup-duration">03:46</span>
+          </div>
+          <div class="cup-video-body">
+            <h3>《雨后菜市场》：一场关于烟火气的静默观察</h3>
+            <p class="cup-video-abs">第 1242 场银奖作品，全程自然光拍摄，环境声设计细腻。</p>
+            <div class="cup-tags"><span>治愈影像</span><span>银奖</span></div>
+            <div class="cup-video-meta">
+              <span class="cup-av" style="background:linear-gradient(135deg,#4fd1a0,#218c6a)">程</span>
+              <span>程阿水</span>
+              <span class="cup-video-actions">
+                <button class="cup-act" data-like type="button" aria-label="点赞">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v10H4V10h3Zm4 10a2 2 0 0 1-2-2v-6l4-8a2 2 0 0 1 3.6 1.7L15 9h4.4a2 2 0 0 1 2 2.4l-1.6 7A2 2 0 0 1 17.8 20H11Z"/></svg>
+                  <span data-count>287</span>
+                </button>
+                <button class="cup-act" data-fav type="button" aria-label="收藏">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cup-video-card" data-cat="创作幕后">
+          <div class="cup-video-cover">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Crect width='640' height='360' fill='%232b2b33'/%3E%3Crect x='60' y='70' width='180' height='120' rx='6' fill='%23ff5a2e' opacity='.8'/%3E%3Crect x='260' y='110' width='180' height='120' rx='6' fill='%23ffb347' opacity='.7'/%3E%3Crect x='460' y='150' width='120' height='120' rx='6' fill='%236b6bff' opacity='.7'/%3E%3Crect x='60' y='240' width='520' height='10' rx='5' fill='%23ffffff' opacity='.25'/%3E%3C/svg%3E" alt="创作幕后内容《一支预告片的 12 个版本》封面：多屏对比色块">
+            <div class="cup-play" aria-hidden="true"><i></i></div>
+            <span class="cup-cover-tag">创作幕后</span>
+            <span class="cup-duration">12:33</span>
+          </div>
+          <div class="cup-video-body">
+            <h3>一支预告片的 12 个版本：改稿到底在改什么</h3>
+            <p class="cup-video-abs">从客户需求到最终成片，完整呈现沟通与取舍的过程。</p>
+            <div class="cup-tags"><span>商业观察</span><span>实用技巧</span></div>
+            <div class="cup-video-meta">
+              <span class="cup-av" style="background:linear-gradient(135deg,#6b6bff,#2b2b33)">K</span>
+              <span>Kevin 拍片日记</span>
+              <span class="cup-video-actions">
+                <button class="cup-act" data-like type="button" aria-label="点赞">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v10H4V10h3Zm4 10a2 2 0 0 1-2-2v-6l4-8a2 2 0 0 1 3.6 1.7L15 9h4.4a2 2 0 0 1 2 2.4l-1.6 7A2 2 0 0 1 17.8 20H11Z"/></svg>
+                  <span data-count>154</span>
+                </button>
+                <button class="cup-act" data-fav type="button" aria-label="收藏">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z"/></svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 专题企划 -->
+  <section class="cup-section" id="cup-series">
+    <div class="cup-wrap">
+      <div class="cup-sec-head">
+        <div>
+          <span class="cup-kicker">Series</span>
+          <h2>专题企划 · 把零散灵感串成线索</h2>
+          <p>每个专题持续更新，围绕一个具体命题收集作品、访谈与方法论。</p>
+        </div>
+      </div>
+      <div class="cup-series">
+        <article class="cup-series-card">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%23ff8b3d'/%3E%3Ccircle cx='90' cy='110' r='70' fill='%23ffe0b5' opacity='.6'/%3E%3Crect x='60' y='230' width='180' height='110' rx='10' fill='%23a52c0c' opacity='.5'/%3E%3C/svg%3E" alt="专题《一天一分钟》封面：橙色圆形与色块构成">
+          <div class="cup-series-info">
+            <h3>一天一分钟</h3>
+            <p>给日常留一个一分钟的固定镜头，连续 30 天。</p>
+            <span class="cup-series-state">更新至 28 期</span>
+          </div>
+        </article>
+        <article class="cup-series-card">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%232e3a48'/%3E%3Cpath d='M40 300 L120 120 L200 260 L260 160 V400 H40Z' fill='%233fa2ff' opacity='.6'/%3E%3Ccircle cx='220' cy='80' r='36' fill='%23c7d4e0' opacity='.8'/%3E%3C/svg%3E" alt="专题《剪辑室的灯》封面：深蓝夜景与山形剪影">
+          <div class="cup-series-info">
+            <h3>剪辑室的灯</h3>
+            <p>走进创作者的工作台，记录真实的创作环境与工具。</p>
+            <span class="cup-series-state">更新至 12 期</span>
+          </div>
+        </article>
+        <article class="cup-series-card">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%23123b32'/%3E%3Ccircle cx='150' cy='170' r='90' fill='%234fd1a0' opacity='.5'/%3E%3Cpath d='M0 340 Q150 280 300 340 V400 H0Z' fill='%23218c6a' opacity='.7'/%3E%3C/svg%3E" alt="专题《街区观察笔记》封面：绿色光斑与坡地线条">
+          <div class="cup-series-info">
+            <h3>街区观察笔记</h3>
+            <p>用影像记录街巷里正在变化与消失的细节。</p>
+            <span class="cup-series-state">更新至 19 期</span>
+          </div>
+        </article>
+        <article class="cup-series-card">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Crect width='300' height='400' fill='%23f3e8ff'/%3E%3Ccircle cx='100' cy='140' r='60' fill='%23a06bff' opacity='.6'/%3E%3Ccircle cx='200' cy='250' r='80' fill='%23ff8bd0' opacity='.55'/%3E%3Crect x='60' y='320' width='180' height='10' rx='5' fill='%235b3fa0' opacity='.35'/%3E%3C/svg%3E" alt="专题《第一次投稿》封面：紫色与粉色圆形叠加">
+          <div class="cup-series-info">
+            <h3>第一次投稿</h3>
+            <p>新人创作者的第一部作品与他们此刻的心情。</p>
+            <span class="cup-series-state">招募中</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 创作者矩阵 -->
+  <section class="cup-section cup-section--alt" id="cup-creators">
+    <div class="cup-wrap">
+      <div class="cup-sec-head">
+        <div>
+          <span class="cup-kicker">Creators</span>
+          <h2>创作者矩阵 · 社区里持续输出的人</h2>
+          <p>来自不同领域的创作者，在这里形成互相学习、互相打气的社区氛围。</p>
+        </div>
+      </div>
+      <div class="cup-creators">
+        <article class="cup-creator">
+          <div class="cup-creator-head">
+            <span class="cup-av" style="background:linear-gradient(135deg,#5b6bff,#2e2a3d)">林</span>
+            <div>
+              <b>林岸</b>
+              <small>擅长：日常记录 / 城市影像</small>
+            </div>
+          </div>
+          <p>用固定机位拍季节与街道，主张「少拍一点，但拍久一点」。连续参加大赛 180 天，作品多次进入创意榜单。</p>
+          <div class="cup-creator-foot"><span>作品 <b>186</b></span><span>关注 <b>3.2 万</b></span></div>
+        </article>
+        <article class="cup-creator">
+          <div class="cup-creator-head">
+            <span class="cup-av" style="background:linear-gradient(135deg,#a06bff,#5b3fa0)">满</span>
+            <div>
+              <b>小满的抽屉</b>
+              <small>擅长：生活方式 / 情感故事</small>
+            </div>
+          </div>
+          <p>把家里的抽屉拍成一个系列，讲述普通人生活里的小事。她的镜头轻，叙事慢，评论区常被称为「电子疗愈站」。</p>
+          <div class="cup-creator-foot"><span>作品 <b>241</b></span><span>关注 <b>5.6 万</b></span></div>
+        </article>
+        <article class="cup-creator">
+          <div class="cup-creator-head">
+            <span class="cup-av" style="background:linear-gradient(135deg,#3fa2ff,#2e3a48)">周</span>
+            <div>
+              <b>周知行</b>
+              <small>擅长：教程干货 / 创作幕后</small>
+            </div>
+          </div>
+          <p>工业设计出身，转行做影像后期。习惯把复杂流程拆成可执行的步骤，是社区里被收藏最多的技术型创作者之一。</p>
+          <div class="cup-creator-foot"><span>作品 <b>98</b></span><span>关注 <b>2.4 万</b></span></div>
+        </article>
+        <article class="cup-creator">
+          <div class="cup-creator-head">
+            <span class="cup-av" style="background:linear-gradient(135deg,#4fd1a0,#218c6a)">程</span>
+            <div>
+              <b>程阿水</b>
+              <small>擅长：治愈影像 / 食物与声音</small>
+            </div>
+          </div>
+          <p>坚持自然光与环境声，作品常被称为「可以闭上眼睛听」。她说创作最难的是耐心等待一个刚好的瞬间。</p>
+          <div class="cup-creator-foot"><span>作品 <b>134</b></span><span>关注 <b>4.1 万</b></span></div>
+        </article>
+        <article class="cup-creator">
+          <div class="cup-creator-head">
+            <span class="cup-av" style="background:linear-gradient(135deg,#c4571f,#ff8b3d)">禾</span>
+            <div>
+              <b>阿禾在路上</b>
+              <small>擅长：城市探索 / 在地文化</small>
+            </div>
+          </div>
+          <p>骑单车记录城市边缘地带，擅长把地图变成影像线索。连续两年参与「街区观察笔记」专题，作品被多家媒体转载。</p>
+          <div class="cup-creator-foot"><span>作品 <b>162</b></span><span>关注 <b>3.8 万</b></span></div>
+        </article>
+        <article class="cup-creator">
+          <div class="cup-creator-head">
+            <span class="cup-av" style="background:linear-gradient(135deg,#6b6bff,#2b2b33)">K</span>
+            <div>
+              <b>Kevin 拍片日记</b>
+              <small>擅长：商业观察 / 实用技巧</small>
+            </div>
+          </div>
+          <p>在商业项目与个人创作之间寻找平衡，公开分享真实的合作流程与踩坑记录，是很多新人上手的第一位「引路人」。</p>
+          <div class="cup-creator-foot"><span>作品 <b>76</b></span><span>关注 <b>1.9 万</b></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 故事与评价 -->
+  <section class="cup-section" id="cup-stories">
+    <div class="cup-wrap">
+      <div class="cup-sec-head">
+        <div>
+          <span class="cup-kicker">Voices</span>
+          <h2>社区里的真实感受</h2>
+          <p>来自创作者与观众的声音，构成了这个品牌最实际的温度。</p>
+        </div>
+      </div>
+
+      <div class="cup-stories">
+        <article class="cup-story">
+          <span class="cup-quote">“</span>
+          <h3>参赛第 30 天，我终于敢拍下自己</h3>
+          <p>以前总觉得镜头要对着别人，后来在每日主题里试着记录自己的一天。第一条作品只有 47 个点赞，但那条评论说「看到了熟悉的通勤疲惫」，我到现在还记得。</p>
+          <footer>—— 创作者 @小满的抽屉</footer>
+        </article>
+        <article class="cup-story">
+          <span class="cup-quote">“</span>
+          <h3>从观众到评审，视角变了</h3>
+          <p>做了一年观众后申请成为社区评审，才发现作品背后有那么多取舍。现在看片会先看声音设计，也会更认真写评审意见，希望每一条建议都对创作者有用。</p>
+          <footer>—— 社区评审 @周知行</footer>
+        </article>
+        <article class="cup-story">
+          <span class="cup-quote">“</span>
+          <h3>在这里找到了固定的创作节奏</h3>
+          <p>自由创作最容易拖延，每日大赛等于给了我一个截止时间。虽然偶尔会赶工，但一年下来作品数比过去三年都多，这种被陪伴的感觉很真实。</p>
+          <footer>—— 创作者 @Kevin 拍片日记</footer>
+        </article>
+      </div>
+
+      <div class="cup-quotes" style="margin-top:26px;">
+        <article class="cup-quote-card">
+          <div class="cup-stars">★★★★★</div>
+          <p>作为普通观众，每天打开都能看到不一样的城市切片，节奏轻、不喧闹，很适合通勤路上看两条。界面干净，分类清楚，是个用心的平台。</p>
+          <div class="cup-quote-who"><span class="cup-av" style="background:#ffb347">观</span>观众 · 周女士</div>
+        </article>
+        <article class="cup-quote-card">
+          <div class="cup-stars">★★★★★</div>
+          <p>投稿审核速度比预想快，规范说明写得清楚。第一次参赛就收到了具体的改进建议，不是敷衍的模板，专业度值得肯定。</p>
+          <div class="cup-quote-who"><span class="cup-av" style="background:#4fd1a0">新</span>新人创作者 · 阿森</div>
+        </article>
+        <article class="cup-quote-card">
+          <div class="cup-stars">★★★★☆</div>
+          <p>专题企划的组织很用心，特别是幕后类内容，能看到别人完整的工作流。希望之后能多一些长片相关的选题。</p>
+          <div class="cup-quote-who"><span class="cup-av" style="background:#3fa2ff">研</span>影像研究者 · 陈老师</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 创作灵感 + 动态 -->
+  <section class="cup-section cup-section--alt" id="cup-news">
+    <div class="cup-wrap">
+      <div class="cup-sec-head">
+        <div>
+          <span class="cup-kicker">Inspiration &amp; Updates</span>
+          <h2>创作灵感 · 企业动态</h2>
+          <p>给正在准备投稿的你一些具体抓手，也同步官方发布的最新安排。</p>
+        </div>
+      </div>
+
+      <div class="cup-idea" style="margin-bottom:34px;">
+        <article class="cup-idea-card">
+          <h3>开篇 3 秒怎么写</h3>
+          <p>先给声音再给画面，用一个具体动作代替空镜。今日主题适合从「关门声」「车流声」切入。</p>
+          <span class="cup-idea-tag">脚本灵感</span>
+        </article>
+        <article class="cup-idea-card">
+          <h3>标题别写满</h3>
+          <p>把「城市清晨的一分钟」拆成一个具体地点加一个状态，比抽象口号更容易被点开。</p>
+          <span class="cup-idea-tag">标题建议</span>
+        </article>
+        <article class="cup-idea-card">
+          <h3>一分钟如何有节奏</h3>
+          <p>建议两段式：前 40 秒铺陈，后 20 秒给一个情绪落点，结尾留半秒静音更抓人。</p>
+          <span class="cup-idea-tag">剪辑思路</span>
+        </article>
+        <article class="cup-idea-card">
+          <h3>别忽略音效清单</h3>
+          <p>提前列一张环境声清单，现场一次录完，能省掉后期大量补录与对轨时间。</p>
+          <span class="cup-idea-tag">实用技巧</span>
+        </article>
+      </div>
+
+      <div class="cup-news">
+        <div class="cup-news-item">
+          <span class="cup-news-date">2026 / 11 / 19</span>
+          <div>
+            <h3>「城市清晨的一分钟」今日主题赛开放报名</h3>
+            <p>投稿截止 23:00，获奖作品将进入本周创意榜单并参与专题展映。</p>
+          </div>
+          <span class="cup-news-more">赛事安排</span>
+        </div>
+        <div class="cup-news-item">
+          <span class="cup-news-date">2026 / 11 / 17</span>
+          <div>
+            <h3>官方发布创作者成长计划 2.0</h3>
+            <p>新增新人引导、月度评审反馈与商业合作撮合三项服务，持续运营中。</p>
+          </div>
+          <span class="cup-news-more">品牌公告</span>
+        </div>
+        <div class="cup-news-item">
+          <span class="cup-news-date">2026 / 11 / 14</span>
+          <div>
+            <h3>「剪辑室的灯」专题更新第 12 期</h3>
+            <p>本期走进一位独立纪录片工作者的工作室，完整呈现设备与工作流。</p>
+          </div>
+          <span class="cup-news-more">内容更新</span>
+        </div>
+        <div class="cup-news-item">
+          <span class="cup-news-date">2026 / 11 / 09</span>
+          <div>
+            <h3>企业共创通道开放申请</h3>
+            <p>面向品牌与机构开放主题共创合作，提供内容策划与创作者对接支持。</p>
+          </div>
+          <span class="cup-news-more">合作入口</span>
+        </div>
+      </div>
+
+      <div style="margin-top:30px;">
+        <h3 style="font-size:16px;margin-bottom:14px;">合作品牌与伙伴</h3>
+        <div class="cup-partners">
+          <span class="cup-partner">光影器材实验室</span>
+          <span class="cup-partner">城市影像档案馆</span>
+          <span class="cup-partner">南岸独立影展</span>
+          <span class="cup-partner">青年创作者联盟</span>
+          <span class="cup-partner">声音设计工作室「回声」</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ + 联系 -->
+  <section class="cup-section" id="cup-faq">
+    <div class="cup-wrap">
+      <div class="cup-sec-head">
+        <div>
+          <span class="cup-kicker">Help</span>
+          <h2>常见问题</h2>
+          <p>关于参赛、投稿与版权的基础说明，帮助你更快开始。</p>
+        </div>
+      </div>
+      <div class="cup-faq">
+        <details open>
+          <summary>如何报名参加每日大赛？</summary>
+          <p>在联系与投稿区获取官方报名入口，填写创作者信息并选择当日主题即可。每个账号每天可提交一件作品，提交后可在个人作品档案中查看审核状态。</p>
+        </details>
+        <details>
+          <summary>投稿作品有哪些格式要求？</summary>
+          <p>建议使用 16:9 横版或 9:16 竖版，分辨率不低于 1080P，文件格式为 MP4 或 MOV。时长以各场主题说明为准，超出时长的作品会进入人工复核流程。</p>
+        </details>
+        <details>
+          <summary>作品必须完全原创吗？</summary>
+          <p>是的。平台坚持原创与正版原则，不接受搬运、拼接或未授权素材。使用第三方音乐与素材需提供授权说明，审核通过后方可进入展映与评选环节。</p>
+        </details>
+        <details>
+          <summary>评选机制是怎样的？</summary>
+          <p>采用社区公开投票与专业评审双轨制。公开投票占比 40%，评审团评分占比 60%，评审意见会以文字形式反馈给创作者，帮助其明确改进方向。</p>
+        </details>
+        <details>
+          <summary>参赛是否收取费用？</summary>
+          <p>每日主题赛对个人创作者完全免费。企业共创类合作按项目另行沟通，所有收费项目均在官方渠道明确公示，不存在隐形费用。</p>
+        </details>
+        <details>
+          <summary>作品版权归谁所有？</summary>
+          <p>版权归创作者所有。平台仅在展示、评选与专题推荐范围内获得授权使用，任何商业用途都会单独沟通并签署授权协议。</p>
+        </details>
+        <details>
+          <summary>可以为企业或机构定制主题赛吗？</summary>
+          <p>可以。企业共创通道支持品牌命题、联合评审与内容分发，我们会根据目标提供选题策划与创作者匹配方案，欢迎通过下方联系方式沟通。</p>
+        </details>
+      </div>
+
+      <div class="cup-contact" id="cup-contact" style="margin-top:40px;">
+        <div>
+          <h2>联系 51推特每日大赛官方网站</h2>
+          <p>无论你是想投稿参赛、寻求合作，还是希望加入社区共建，都可以通过这些方式找到我们。工作时间内会有专人回复，赛事相关问题优先处理。</p>
+          <div class="cup-contact-info">
+            <span>合作与共创：<b>hello@daily-arena.example</b></span>
+            <span>投稿咨询：<b>submit@daily-arena.example</b></span>
+            <span>媒体联络：<b>press@daily-arena.example</b></span>
+            <span>办公时间：<b>周一至周五 10:00 - 19:00</b></span>
+          </div>
+        </div>
+        <div class="cup-contact-panel">
+          <h3>快速通道</h3>
+          <p>复制官方报名入口链接，或直接提交你的投稿意向。</p>
+          <div class="cup-copy-row">
+            <input type="text" id="cupShareLink" value="https://daily-arena.example/join" readonly aria-label="官方报名入口链接">
+            <button type="button" id="cupCopyBtn">复制</button>
+          </div>
+          <button class="cup-btn cup-btn--solid" type="button" id="cupSubmitBtn" style="justify-content:center;">提交投稿意向</button>
+          <button class="cup-btn cup-btn--ghost" type="button" data-cup-share="51推特每日大赛官方网站" style="justify-content:center;">分享给朋友</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="cup-footer">
+  <div class="cup-wrap">
+    <div class="cup-footer-grid">
+      <div>
+        <div class="cup-footer-brand">
+          <span class="cup-brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 5.5 19 12 8 18.5V5.5Z" fill="#fff"/></svg>
+          </span>
+          <b>51推特每日大赛</b>
+        </div>
+        <p>51推特每日大赛官方网站，是一个以每日主题赛为核心的创意影像社区。我们持续运营、坚持原创与正版，为创作者与企业搭建值得信赖的内容生态。</p>
+      </div>
+      <div>
+        <h4>内容导航</h4>
+        <p><a href="#cup-focus">焦点内容</a></p>
+        <p><a href="#cup-series">专题企划</a></p>
+        <p><a href="#cup-creators">创作者矩阵</a></p>
+        <p><a href="#cup-news">企业动态</a></p>
+      </div>
+      <div>
+        <h4>参与方式</h4>
+        <p><a href="#cup-contact">报名参赛</a></p>
+        <p><a href="#cup-contact">投稿指南</a></p>
+        <p><a href="#cup-faq">常见问题</a></p>
+        <p><a href="#cup-contact">企业共创</a></p>
+      </div>
+      <div>
+        <h4>关于品牌</h4>
+        <p><a href="#cup-about">品牌故事</a></p>
+        <p><a href="#cup-about">平台机制</a></p>
+        <p><a href="#cup-faq">版权说明</a></p>
+        <p><a href="#cup-contact">联系官方</a></p>
+      </div>
+    </div>
+    <div class="cup-footer-bottom">
+      <span>© 2026 51推特每日大赛 · 官方网站 · 版权所有</span>
+      <span>持续运营中 · 内容以官方发布为准</span>
+    </div>
+  </div>
+</footer>
+
+<button class="cup-top-btn" id="cupTopBtn" type="button" aria-label="回到顶部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div class="cup-toast" id="cupToast" role="status" aria-live="polite"></div>
+
+<div class="cup-modal" id="cupModal" role="dialog" aria-modal="true" aria-labelledby="cupModalTitle">
+  <div class="cup-modal-box cup-modal-inner">
+    <button class="cup-modal-close" id="cupModalClose" type="button" aria-label="关闭">×</button>
+    <h3 id="cupModalTitle">提交投稿意向</h3>
+    <p>留下你的创作方向与联系方式，赛事运营同学会在 1 个工作日内与你联系。</p>
+    <textarea id="cupModalText" placeholder="例如：我想参加「城市清晨的一分钟」主题，擅长手机竖版拍摄，联系方式……"></textarea>
+    <div class="cup-modal-actions">
+      <button class="cup-btn cup-btn--ghost" type="button" id="cupModalCancel">取消</button>
+      <button class="cup-btn cup-btn--solid" type="button" id="cupModalSend">提交</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var toastEl = document.getElementById('cupToast');
+  var toastTimer = null;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('is-on'); }, 2100);
+  }
+
+  /* 移动端导航 */
+  var burger = document.getElementById('cupBurger');
+  var nav = document.getElementById('cupNav');
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A' && window.innerWidth <= 720){
+      nav.classList.remove('is-open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+
+  /* 搜索反馈 */
+  var searchInput = document.getElementById('cupSearch');
+  var searchHint = document.getElementById('cupSearchHint');
+  var searchBtn = document.getElementById('cupSearchBtn');
+  function doSearch(){
+    var q = searchInput.value.trim();
+    if(!q){
+      searchHint.textContent = '试试搜索：城市清晨、剪辑幕后、新人投稿';
+      searchHint.classList.add('is-on');
+      return;
+    }
+    searchHint.textContent = '正在为你检索「' + q + '」相关主题与创作者，可在焦点内容与专题企划中继续浏览。';
+    searchHint.classList.add('is-on');
+    toast('已搜索：' + q);
+  }
+  searchBtn.addEventListener('click', doSearch);
+  searchInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); doSearch(); }
+  });
+  searchInput.addEventListener('input', function(){
+    if(!searchInput.value.trim()){ searchHint.classList.remove('is-on'); }
+  });
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.cup-search')){ searchHint.classList.remove('is-on'); }
+  });
+
+  /* 标签筛选 */
+  var topics = document.getElementById('cupTopics');
+  var filterNote = document.getElementById('cupFilterNote');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#cupSpotlight [data-cat], #cupFlow [data-cat]'));
+  topics.addEventListener('click', function(e){
+    var btn = e.target.closest('.cup-topic');
+    if(!btn) return;
+    topics.querySelectorAll('.cup-topic').forEach(function(b){ b.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+    var t = btn.getAttribute('data-topic');
+    var shown = 0;
+    cards.forEach(function(c){
+      var ok = (t === '全部') || c.getAttribute('data-cat') === t;
+      c.style.display = ok ? '' : 'none';
+      if(ok) shown++;
+    });
+    filterNote.textContent = '当前展示「' + t + '」焦点内容，共 ' + shown + ' 条。';
+  });
+
+  /* 点赞 / 收藏 */
+  document.querySelectorAll('[data-like]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var span = btn.querySelector('[data-count]');
+      var n = parseInt(span.textContent, 10);
+      if(btn.classList.toggle('is-on')){
+        span.textContent = n + 1;
+        toast('感谢你的点赞');
+      } else {
+        span.textContent = Math.max(0, n - 1);
+      }
+    });
+  });
+  document.querySelectorAll('[data-fav]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var on = btn.classList.toggle('is-on');
+      btn.style.color = on ? 'var(--cup-primary-deep)' : '';
+      var svg = btn.querySelector('svg');
+      if(svg) svg.setAttribute('fill', on ? 'currentColor' : 'none');
+      toast(on ? '已加入收藏' : '已取消收藏');
+    });
+  });
+
+  /* 复制链接 */
+  var copyBtn = document.getElementById('cupCopyBtn');
+  var shareLink = document.getElementById('cupShareLink');
+  copyBtn.addEventListener('click', function(){
+    var text = shareLink.value;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        toast('报名入口已复制');
+      }).catch(function(){
+        shareLink.select();
+        toast('请手动复制报名入口');
+      });
+    } else {
+      shareLink.select();
+      try{ document.execCommand('copy'); toast('报名入口已复制'); }
+      catch(err){ toast('请手动复制报名入口'); }
+    }
+  });
+
+  /* 分享 */
+  document.querySelectorAll('[data-cup-share]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var title = btn.getAttribute('data-cup-share');
+      if(navigator.share){
+        navigator.share({title:title, text:'每日一场创意影像赛事，一起参与吧。'}).catch(function(){});
+      } else {
+        toast('可复制链接分享给微信、微博或好友');
+      }
+    });
+  });
+
+  /* 投稿意向弹窗 */
+  var modal = document.getElementById('cupModal');
+  var submitBtn = document.getElementById('cupSubmitBtn');
+  var modalClose = document.getElementById('cupModalClose');
+  var modalCancel = document.getElementById('cupModalCancel');
+  var modalSend = document.getElementById('cupModalSend');
+  var modalText = document.getElementById('cupModalText');
+  function openModal(){
+    modal.classList.add('is-on');
+    setTimeout(function(){ modalText.focus(); }, 60);
+  }
+  function closeModal(){
+    modal.classList.remove('is-on');
+  }
+  submitBtn.addEventListener('click', openModal);
+  modalClose.addEventListener('click', closeModal);
+  modalCancel.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  modalSend.addEventListener('click', function(){
+    if(!modalText.value.trim()){
+      toast('请先简单描述你的创作方向');
+      modalText.focus();
+      return;
+    }
+    closeModal();
+    modalText.value = '';
+    toast('投稿意向已提交，我们会尽快联系你');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modal.classList.contains('is-on')) closeModal();
+  });
+
+  /* 回到顶部 */
+  var topBtn = document.getElementById('cupTopBtn');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 480){ topBtn.classList.add('is-on'); }
+    else { topBtn.classList.remove('is-on'); }
+  }, {passive:true});
+  topBtn.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+                                                               </html>
